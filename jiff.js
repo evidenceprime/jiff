@@ -48,7 +48,6 @@ function diffA(a, b, path, options) {
 	for (var i = 0; i < max(a.length, b.length); i++) {
 		var aEl = typeof(a[i]) !== 'undefined'? a[i] : {};
 		var bEl = typeof(b[i]) !== 'undefined'? b[i] : {};
-		console.log(aEl, bEl);
 		var elDiff = appendChanges(aEl, bEl, path + "/" + i, initState(options, [])).patch;
 		if (elDiff.length > 0) {
 			changes.push(elDiff);
