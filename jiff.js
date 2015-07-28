@@ -39,15 +39,17 @@ function diff(a, b, options) {
 	return appendChanges(a, b, '', initState(options, [])).patch;
 }
 
-function diffA(a, b, options) {
+function diffA(a, b, path, options) {
+	path = (path !== 'undefined') ? path : "";
 	var max = function(x, y) {
 		return x > y? x : y;
 	};
 	var changes = [];
 	for (var i = 0; i < max(a.length, b.length); i++) {
-		var aEl = a[i] !== 'undefined'? a[i] : {};
-		var bEl = b[i] !== 'undefined'? b[i] : {};
-		var elDiff = appendChanges(aEl, bEl, "/" + i, initState(options, [])).patch;
+		var aEl = typeof(a[i]) !== 'undefined'? a[i] : {};
+		var bEl = typeof(b[i]) !== 'undefined'? b[i] : {};
+		console.log(aEl, bEl);
+		var elDiff = appendChanges(aEl, bEl, path + "/" + i, initState(options, [])).patch;
 		if (elDiff.length > 0) {
 			changes.push(elDiff);
 		}
@@ -91,7 +93,12 @@ function initState(options, patch) {
  */
 function appendChanges(a, b, path, state) {
 	if(Array.isArray(a) && Array.isArray(b)) {
-		return appendArrayChanges(a, b, path, state);
+		var diff = diffA(a, b, path);
+		for (var i = 0; i < diff.length; i++) {
+			state.patch.push(diff[i]);
+		}
+		return state;
+	//	return appendArrayChanges(a, b, path, state);
 	}
 
 	if(isValidObject(a) && isValidObject(b)) {
