@@ -10,6 +10,7 @@ var jsonPointer = require('./lib/jsonPointer');
 var encodeSegment = jsonPointer.encodeSegment;
 
 exports.diff = diff;
+exports.diffA = diffA;
 exports.patch = patch.apply;
 exports.patchInPlace = patch.applyInPlace;
 exports.inverse = inverse;
@@ -36,6 +37,22 @@ var defaultHash = patch.defaultHash;
  */
 function diff(a, b, options) {
 	return appendChanges(a, b, '', initState(options, [])).patch;
+}
+
+function diffA(a, b, options) {
+	var max = function(x, y) {
+		return x > y? x : y;
+	};
+	var changes = [];
+	for (var i = 0; i < max(a.length, b.length) {
+		var aEl = a[i] !== 'undefined'? a[i] : {};
+		var bEl = b[i] !== 'undefined'? b[i] : {};
+		var elDiff = appendChanges(a[i], b[i], "/" + i, initState(options, [])).patch;
+		if (elDiff.length > 0) {
+			changes.push(elDiff);
+		}
+	}
+	return [].concat.apply([], changes);
 }
 
 /**
