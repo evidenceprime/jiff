@@ -44,7 +44,7 @@ function diffA(a, b, options) {
 		return x > y? x : y;
 	};
 	var changes = [];
-	for (var i = 0; i < max(a.length, b.length) {
+	for (var i = 0; i < max(a.length, b.length); i++) {
 		var aEl = a[i] !== 'undefined'? a[i] : {};
 		var bEl = b[i] !== 'undefined'? b[i] : {};
 		var elDiff = appendChanges(a[i], b[i], "/" + i, initState(options, [])).patch;
